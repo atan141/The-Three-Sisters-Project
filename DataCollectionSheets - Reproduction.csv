@@ -1,0 +1,37 @@
+Pot_ID,Experiment,Block,Treatment,System,n_c_plants,n_b_plants,n_s_plants,n_c_flowers,n_b_flowers,n_s_flowers,n_c_ears,n_b_pods,n_s_fruits,Notes,n_c_flowers_adj,n_b_flowers_adj,n_s_flowers_adj,n_c_ears_adj,n_b_pods_adj,n_s_fruits_adj
+M1-P-C,Main,1,Poor,Corn,3,,,0,,,0,,,,0,,,0,,
+M1-P-B,Main,1,Poor,Bean,,3,,,7,,,7,,,,2.333333333,,,2.333333333,
+M1-P-S,Main,1,Poor,Squash,,,3,,,0,,,0,,,,0,,,0
+M1-P-T,Main,1,Poor,Three Sisters,1,1,1,0,4,0,0,4,0,,0,4,0,0,4,0
+M1-R-C,Main,1,Rich,Corn,3,,,0,,,1,,,,0,,,0.333333333,,
+M1-R-B,Main,1,Rich,Bean,,3,,,17,,,2,,,,5.666666667,,,0.666666667,
+M1-R-S,Main,1,Rich,Squash,,,3,,,0,,,16,,,,0,,,5.333333333
+M1-R-T,Main,1,Rich,Three Sisters,1,1,1,0,4,2,0,0,0,,0,4,2,0,0,0
+M2-P-C,Main,2,Poor,Corn,3,,,0,,,0,,,,0,,,0,,
+M2-P-B,Main,2,Poor,Bean,,3,,,7,,,10,,,,2.333333333,,,3.333333333,
+M2-P-S,Main,2,Poor,Squash,,,3,,,0,,,0,,,,0,,,0
+M2-P-T,Main,2,Poor,Three Sisters,1,1,1,0,2,0,0,0,0,,0,2,0,0,0,0
+M2-R-C,Main,2,Rich,Corn,3,,,3,,,2,,,,1,,,0.666666667,,
+M2-R-B,Main,2,Rich,Bean,,3,,,5,,,1,,,,1.666666667,,,0.333333333,
+M2-R-S,Main,2,Rich,Squash,,,3,,,3,,,16,,,,1,,,5.333333333
+M2-R-T,Main,2,Rich,Three Sisters,1,1,1,0,6,2,1,0,5,,0,6,2,1,0,5
+M3-P-C,Main,3,Poor,Corn,3,,,0,,,0,,,,0,,,0,,
+M3-P-B,Main,3,Poor,Bean,,3,,,6,,,0,,,,2,,,0,
+M3-P-S,Main,3,Poor,Squash,,,3,,,0,,,0,,,,0,,,0
+M3-P-T,Main,3,Poor,Three Sisters,1,1,1,0,2,0,0,0,0,,0,2,0,0,0,0
+M3-R-C,Main,3,Rich,Corn,3,,,0,,,3,,,,0,,,1,,
+M3-R-B,Main,3,Rich,Bean,,3,,,19,,,2,,,,6.333333333,,,0,
+M3-R-S,Main,3,Rich,Squash,,,3,,,3,,,1,,,,1,,,0.333333333
+M3-R-T,Main,3,Rich,Three Sisters,1,1,1,0,5,0,0,0,1,,0,5,0,0,0,1
+H1-D-C,Heat Wave,1,Drought,Corn,3,,,0,,,0,,,,0,,,0,,
+H1-D-T,Heat Wave,1,Drought,Three Sisters,1,1,1,0,0,0,0,0,0,,0,0,0,0,0,0
+H1-W-C,Heat Wave,1,Watered,Corn,3,,,0,,,1,,,,0,,,0.333333333,,
+H1-W-T,Heat Wave,1,Watered,Three Sisters,1,1,1,0,0,0,1,0,0,,0,0,0,1,0,0
+H2-D-C,Heat Wave,2,Drought,Corn,3,,,0,,,2,,,,0,,,0.666666667,,
+H2-D-T,Heat Wave,2,Drought,Three Sisters,1,1,1,0,0,0,0,0,0,,0,0,0,0,0,0
+H2-W-C,Heat Wave,2,Watered,Corn,3,,,0,,,1,,,,0,,,0,,
+H2-W-T,Heat Wave,2,Watered,Three Sisters,1,1,1,0,0,0,0,0,0,,0,0,0,0,0,0
+H3-D-C,Heat Wave,3,Drought,Corn,3,,,0,,,2,,,,0,,,0.666666667,,
+H3-D-T,Heat Wave,3,Drought,Three Sisters,1,1,1,0,0,0,0,0,0,,0,0,0,0,0,0
+H3-W-C,Heat Wave,3,Watered,Corn,3,,,0,,,1,,,,0,,,0.333333333,,
+H3-W-T,Heat Wave,3,Watered,Three Sisters,1,1,1,0,0,0,1,0,0,,0,0,0,1,0,0

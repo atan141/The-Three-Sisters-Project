@@ -1,0 +1,448 @@
+---
+title: "Three Sisters Experiments: Data Wrangling and Analysis"
+author: "Oscely Acevedo & Annie Tan"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+# Introduction
+
+In this lab you will explore how the **Three Sisters agroecosystem** (corn, beans, squash) responds to:
+- **Nutrient treatments** in the *Main Experiment*  
+- **Water treatments (Drought vs Watered)** during the *Heat Wave Experiment*
+
+You will learn to:
+1. **Import and wrangle data**
+2. **Create growth metrics** for each species  
+3. **Make faceted boxplots** comparing growth across systems  
+4. **Interpret environmental data** from the heat wave  
+5. **Make your own plots**
+
+Throughout this Rmd, **chunks marked with ➤ YOU DO THIS** are student tasks.
+
+---
+
+# Part 1 — Load Packages and Import Data
+
+```{r setup, message=FALSE}
+library(tidyverse)
+library(lubridate)
+
+theme_set(theme_minimal(base_size = 16))
+
+color_vals <- c(
+  "Corn"          = "gold",
+  "Bean"          = "chartreuse4",
+  "Squash"        = "darkorange1",
+  "Three Sisters" = "skyblue"
+)
+
+drought_color_vals <- c(
+  "Drought" = "grey60",
+  "Watered" = "black"
+)
+
+shape_vals <- c(Drought = 17, Hydrated = 16) 
+
+linetype_vals <- c(
+  "Nutrient-poor soil" = "solid",
+  "Nutrient-rich soil" = "solid",
+  "Drought"            = "dotted",
+  "Watered"            = "solid",
+  "Hydrated"            = "solid"
+)
+
+# create a figures directory for use later
+dir.create("figures")
+```
+
+```{r import}
+bean   <- read_csv("DataCollectionSheets - Bean_Growth.csv")
+corn   <- read_csv("DataCollectionSheets - Corn_Growth.csv")
+squash <- read_csv("DataCollectionSheets - Squash_Growth.csv")
+repr   <- read_csv("DataCollectionSheets - Reproduction.csv")
+heat   <- read_csv("drought.csv")
+```
+
+---
+
+# Part 2 — Data Wrangling (Instructor Walkthrough)
+
+## 2.1 Wrangling Bean Growth  
+Beans have:
+- **Climb height**  
+- **Internode length**  
+- **Max node number**
+
+We create a **branch length growth metric**:
+
+```{r bean-wrangle}
+bean_grow <- bean %>% 
+  mutate(
+    species = "Bean",
+    branch_length_cm = bean_band_len_node1_to4_cm * bean_max_node_number
+  )
+```
+
+## 2.2 Wrangling Corn Growth  
+Corn pots had 1–3 plants. We take **mean height per pot**:
+
+```{r corn-wrangle}
+corn_grow <- corn %>%
+  mutate(
+    species = "Corn",
+    corn_height_mean = rowMeans(select(., starts_with("corn_height")),
+                                na.rm = TRUE)
+  )
+```
+
+## 2.3 Wrangling Squash Growth  
+Squash height wasn’t measured. Instead, you measured **length × width** of the 3 largest leaves.
+
+We estimate **leaf area** using an ellipse approximation (× 0.75):
+
+```{r squash-wrangle}
+shape_factor <- 0.75
+
+squash_grow <- squash %>%
+  mutate(
+    species = "Squash",
+    leaf1 = S1_leaf_L_cm * S1_leaf_W_cm * shape_factor,
+    leaf2 = S2_leaf_L_cm * S2_leaf_W_cm * shape_factor,
+    leaf3 = S3_leaf_L_cm * S3_leaf_W_cm * shape_factor,
+    growth_proxy_cm2 = pmax(leaf1, leaf2, leaf3, na.rm = TRUE)
+  )
+```
+
+---
+
+# Part 3 — Combine Growth Data
+
+We build one dataset with a **unified growth metric**:
+
+```{r combine}
+growth_all <- bind_rows(
+  bean_grow %>% mutate(growth_metric = branch_length_cm),
+  corn_grow %>% mutate(growth_metric = corn_height_mean),
+  squash_grow %>% mutate(growth_metric = growth_proxy_cm2)
+)
+```
+
+---
+
+# Part 4 — Task: Clean for Main Experiment
+
+The main experiment compares:
+- **Nutrient-poor soil**
+- **Nutrient-rich soil**
+
+➤ **YOU DO THIS:** Filter `growth_all` for the *Main* experiment.
+
+```{r student-filter, eval=FALSE}
+growth_main <- growth_all %>%
+  filter(Experiment == "Main")
+```
+
+---
+
+# Part 5 — Plot: Growth in Main Experiment
+
+Make a faceted boxplot like this:
+
+```{r main-plot-example, echo=FALSE}
+growth_all_plot <- growth_all %>% 
+  filter(Experiment == "Main") %>% 
+  ggplot(aes(x = System,
+             y = growth_metric,
+             fill = species)) +
+  geom_boxplot(alpha = 0.85) +
+  scale_fill_manual(values = color_vals,
+                    name = "Species") +
+  facet_wrap(~ species, scales = "free") +
+  labs(
+    title = "Growth in Main Experiment",
+    x = "System",
+    y = "Growth metric"
+  ) +
+scale_x_discrete(drop = TRUE, labels = c(
+    "Corn"          = "C",
+    "Bean"          = "B",
+    "Squash"        = "S",
+    "Three Sisters" = "T"
+  )) 
+
+# view the plot
+growth_all_plot
+```
+
+### Save your figure
+```{r}
+# Save your plot for use in your full lab report 
+ggsave("figures/growth_all_plot.png", growth_all_plot, width = 7, height = 5, dpi = 300)
+
+```
+
+---
+
+➤ **YOU DO THIS:**  
+Create your own version of the Main Experiment plot.
+```{r 2}
+# your code here
+new_growth_all_plot <- growth_all %>% 
+  filter(Experiment == "Main") %>% 
+  ggplot(aes(x = System,
+             y = growth_metric,
+             fill = species)) +
+  geom_boxplot(alpha = 0.85) +
+  scale_fill_manual(values = color_vals,
+                    name = "Species") +
+  facet_wrap(~ species, scales = "free") +
+  labs(
+    title = "Growth in Main Experiment",
+    x = "System",
+    y = "Growth Metric"
+  ) +
+scale_x_discrete(drop = TRUE, labels = c(
+    "Corn"          = "Corn",
+    "Bean"          = "Beans",
+    "Squash"        = "Squash",
+    "Three Sisters" = "Three Sisters"
+)
+  ) +
+  theme(
+    axis.text.x = element_text(size = 9),   # smaller x-axis labels
+    axis.text.y = element_text(size = 9),   # smaller y-axis labels
+    axis.title = element_text(size = 10)    # smaller axis titles
+  )
+
+# view the plot
+
+new_growth_all_plot
+
+```
+
+---
+
+# Part 6 — Explore Reproductive Output
+
+We wrangle reproduction data:
+
+```{r repr-long}
+repr_long <- repr %>%
+  mutate(
+    squash_fruits  = n_s_fruits,
+    bean_pods      = n_b_pods,
+    corn_ears      = n_c_ears
+  ) %>%
+  pivot_longer(
+    cols = c(squash_fruits, bean_pods, corn_ears),
+    names_to = "type",
+    values_to = "value"
+  )
+```
+
+We remove species not present in each system:
+
+```{r repr-clean}
+repr_clean <- repr_long %>%
+  filter(
+    (type == "corn_ears"      & System %in% c("Corn", "Three Sisters")) |
+    (type == "bean_pods"      & System %in% c("Bean", "Three Sisters")) |
+    (type == "squash_fruits"  & System %in% c("Squash", "Three Sisters"))
+  ) %>%
+  droplevels()
+```
+
+➤ **YOU DO THIS:**  
+Plot reproductive output by species and system.
+```{r}
+rep_plot <- ggplot(repr_clean, aes(x = System, y = value, fill = type)) +
+  geom_boxplot(alpha = 0.7, outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  scale_fill_manual(
+    values = c(
+      corn_ears = "#E69F00",
+      bean_pods = "#56B4E9",
+      squash_fruits = "#009E73"
+    ),
+    labels = c("Corn ears", "Bean pods", "Squash fruits")
+  ) +
+  facet_wrap(~ type, scales = "free") +
+  labs(
+    x = "System",
+    y = "Reproductive Output",
+    fill = "Species",
+    title = "Reproductive Output by Species and System"
+  ) +
+  theme_bw(base_size = 14
+  ) +
+  theme(
+    axis.text.x = element_text(size = 9),   # smaller x-axis labels
+    axis.text.y = element_text(size = 9),   # smaller y-axis labels
+    axis.title = element_text(size = 10)    # smaller axis titles
+  )
+
+
+rep_plot
+
+ggsave("figures/rep_plot.png", rep_plot, width = 7, height = 5, dpi=300)
+```
+
+---
+
+# Part 7 — Heat Wave Environmetnal Data
+
+## 7.1 Wrangling Heat Wave Growth
+```{r load-heat-wave}
+# load data
+heatwave <- read.csv("drought.csv", stringsAsFactors = T)
+heatwave |> mutate( Date = mdy(Date)) -> dat
+```
+
+### Summarize heat wave data
+```{r summarize-heat-wave}
+heatwave_sum <- heatwave |>
+group_by(Date, System, Treatment) |>
+summarise(
+Temp_mean = mean(Temp...F., na.rm = TRUE),
+Temp_se = sd(Temp...F., na.rm = TRUE) / sqrt(dplyr::n()),
+Soil_mean = mean(Soil.Moisture, na.rm = TRUE),
+Soil_se = sd(Soil.Moisture, na.rm = TRUE) / sqrt(dplyr::n()),
+RH_mean = mean(Humidity...., na.rm = TRUE),
+RH_se = sd(Humidity...., na.rm = TRUE) / sqrt(dplyr::n()),
+.groups = "drop"
+)
+```
+
+## 7.2 Plot temperature
+```{r temp-plot}
+ggplot(heatwave_sum, aes(x = Date, y = Temp_mean,
+                    color = System,
+                    shape = Treatment,
+                    linetype = Treatment,
+                    group = interaction(System, Treatment))) +
+    geom_errorbar(aes(ymin = Temp_mean - Temp_se,
+                    ymax = Temp_mean + Temp_se),
+                width = 0.1,
+                size = 1,
+       color = "gray60",
+       linetype = "solid") +
+  geom_line(size = 2,
+       alpha = 1) +
+  geom_point(size = 5,
+       alpha = 0.5) +
+  scale_color_manual(values = color_vals) +
+  scale_shape_manual(values = shape_vals) +
+  scale_linetype_manual(values = linetype_vals) +
+  labs(title = "Soil surface temperature of heat wave",
+       x = "Date", y = "Temperature (°F)")
+```
+
+## 7.3 Plot soil moisture
+```{r soil-plot} 
+ggplot(
+  heatwave_sum,
+  aes(
+    x = Date,
+    y = Soil_mean,
+    color = System,
+    shape = Treatment,
+    linetype = Treatment,
+                    group = interaction(System, Treatment))) +
+  
+  geom_errorbar(aes(ymin = Soil_mean - Soil_se,
+                    ymax = Soil_mean + Soil_se),
+                width = 0.1,
+                size = 1,
+       alpha = 1,
+       color = "gray60",
+       linetype = "solid") +
+  geom_line(size = 2,
+       alpha = 1) +
+  geom_point(size = 5,
+       alpha = 1) +
+  scale_color_manual(values = color_vals) +
+  scale_shape_manual(values = shape_vals) +
+  scale_linetype_manual(values = linetype_vals) +
+  labs(title = "Soil Moisture of Heat Wave",
+       x = "Date", y = "Soil Moisture (1–10)")
+```
+
+## 7.4 Plot humidity
+```{r rh-plot} 
+ggplot(
+  heatwave_sum,
+  aes(
+    x = Date,
+    y = RH_mean,
+    color = System,
+    shape = Treatment,
+    linetype = Treatment,
+                    group = interaction(System, Treatment))) +
+  
+    geom_errorbar(aes(ymin = RH_mean - RH_se,
+                    ymax = RH_mean + RH_se),
+                width = 0.1,
+                size = 1,
+       alpha = 1,
+       color = "gray60",
+       linetype = "solid") +
+  geom_line(size = 2,
+       alpha = 1) +
+  geom_point(size = 5,
+       alpha = 1) +
+  scale_color_manual(values = color_vals) +
+  scale_shape_manual(values = shape_vals) +
+  scale_linetype_manual(values = linetype_vals) +
+  labs(title = "Relative Humidity of Heat Wave",
+       x = "Date", y = "Relative Humidity (%)")
+```
+
+
+
+---
+
+# Part 9 — Student Task: Make the Heat Wave Growth Plots
+
+➤ **YOU DO THIS:**
+
+```{r student-heat-plot, eval=FALSE}
+# your code here
+```
+
+---
+
+# Part 10 — Discussion Questions
+
+
+### Growth & Treatment Effects
+1. Which species benefited most from nutrient-rich soil in the main experiment?
+2. How does the Three Sisters system affect each crop’s growth?
+3. Which species showed the largest impact of drought during the heat wave?
+4. How do temperature, humidity, and soil moisture trends help explain your growth results?
+
+### Flower and Fruit Production
+5. Which species produced the most reproductive structures (flowers, pods, ears, fruits) in the main experiment?
+6. How did nutrient treatment (nutrient-poor vs nutrient-rich) affect flower or fruit production for each species?
+7. Did the Three Sisters system change reproductive output for any crop?
+8. Is reproductive output proportional to vegetative growth? Do the biggest plants also make the most flowers and fruits?
+
+### Plant Health (Greenness)
+9. How does greenness (1–3 scale) vary between treatments (nutrient-poor vs nutrient-rich, drought vs watered)?
+10. Did the Three Sisters system improve plant health (as measured by greenness)?
+11. Which species appears most sensitive to nutrient stress or drought based on greenness scores?
+
+### Synthesis
+12. Do patterns in growth, reproduction, and greenness tell a consistent story for each species?
+13. Based on the combined evidence, which species seems to benefit most from being in a Three Sisters system?
+14. If you were advising a farmer facing nutrient-poor soils or drought, which results from this experiment would be most relevant?
+
+
+Write brief answers below:
+
+
+---
+

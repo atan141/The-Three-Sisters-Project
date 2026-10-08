@@ -1,0 +1,37 @@
+Date,Pot_ID,Experiment,Block,Treatment,System,Humidity (%),Temp (°F),Soil Moisture
+11/17/25,H1-D-T,Heat Wave,1,Drought,Three Sisters,86,66.5,8
+11/17/25,H2-D-T,Heat Wave,2,Drought,Three Sisters,92,64.5,4
+11/17/25,H3-D-T,Heat Wave,3,Drought,Three Sisters,89,63.6,5
+11/17/25,H1-D-C,Heat Wave,1,Drought,Corn,90,65.3,8
+11/17/25,H2-D-C,Heat Wave,2,Drought,Corn,81,66.5,8
+11/17/25,H3-D-C,Heat Wave,3,Drought,Corn,94,64.5,7
+11/17/25,H1-W-T,Heat Wave,1,Hydrated,Three Sisters,95,69.2,9
+11/17/25,H2-W-T,Heat Wave,2,Hydrated,Three Sisters,91,70.7,5
+11/17/25,H3-W-T,Heat Wave,3,Hydrated,Three Sisters,99,67.1,6
+11/17/25,H1-W-C,Heat Wave,1,Hydrated,Corn,89,66.7,6
+11/17/25,H2-W-C,Heat Wave,2,Hydrated,Corn,99,69.4,8
+11/17/25,H2-W-C,Heat Wave,3,Hydrated,Corn,91,66,6
+11/20/25,H1-D-T,Heat Wave,1,Drought,Three Sisters,70,86.5,3
+11/20/25,H2-D-T,Heat Wave,2,Drought,Three Sisters,85,85.2,4
+11/20/25,H3-D-T,Heat Wave,3,Drought,Three Sisters,86,84.7,5
+11/20/25,H1-D-C,Heat Wave,1,Drought,Corn,69,90.8,3
+11/20/25,H2-D-C,Heat Wave,2,Drought,Corn,75,87.9,6
+11/20/25,H3-D-C,Heat Wave,3,Drought,Corn,85,88.3,5
+11/20/25,H1-W-T,Heat Wave,1,Hydrated,Three Sisters,74,86.1,5
+11/20/25,H2-W-T,Heat Wave,2,Hydrated,Three Sisters,74,83.8,6
+11/20/25,H3-W-T,Heat Wave,3,Hydrated,Three Sisters,66,88.1,6
+11/20/25,H1-W-C,Heat Wave,1,Hydrated,Corn,69,85.6,6
+11/20/25,H2-W-C,Heat Wave,2,Hydrated,Corn,70,86.1,7
+11/20/25,H2-W-C,Heat Wave,3,Hydrated,Corn,77,84.2,9
+11/26/25,H1-D-T,Heat Wave,1,Drought,Three Sisters,64,80,2
+11/26/25,H2-D-T,Heat Wave,2,Drought,Three Sisters,61,80,4
+11/26/25,H3-D-T,Heat Wave,3,Drought,Three Sisters,62,83.6,1
+11/26/25,H1-D-C,Heat Wave,1,Drought,Corn,56,90.1,2
+11/26/25,H2-D-C,Heat Wave,2,Drought,Corn,57,84.5,2
+11/26/25,H3-D-C,Heat Wave,3,Drought,Corn,56,88.8,1
+11/26/25,H1-W-T,Heat Wave,1,Hydrated,Three Sisters,77,79.5,4
+11/26/25,H2-W-T,Heat Wave,2,Hydrated,Three Sisters,69,81.1,5
+11/26/25,H3-W-T,Heat Wave,3,Hydrated,Three Sisters,64,83.3,6
+11/26/25,H1-W-C,Heat Wave,1,Hydrated,Corn,75,78.6,4
+11/26/25,H2-W-C,Heat Wave,2,Hydrated,Corn,60,88.7,6
+11/26/25,H2-W-C,Heat Wave,3,Hydrated,Corn,66,81.6,5
